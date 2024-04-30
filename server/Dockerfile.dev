@@ -5,9 +5,9 @@ WORKDIR /app
 COPY package*.json ./
 COPY yarn*.lock ./
 
-RUN yarn install
+# RUN yarn install # disabled for now, because it's not necessary for development
 
-COPY . .
+# COPY . .
 
 EXPOSE 3000
 
