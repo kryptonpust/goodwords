@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { DatabaseModule } from './database/prisma.module';
 
 @Module({
-  imports: [],
+  imports: [DatabaseModule],
   controllers: [],
   providers: [],
 })

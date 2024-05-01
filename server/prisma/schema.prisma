@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+// Define the UserEntity model
+model UserEntity {
+  id                Int                 @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  dateOfBirth       DateTime
+  gender            Gender
+  email             String              @unique
+  password          String
+  createdAt         DateTime            @default(now())
+  PostEntity        PostEntity[]
+  LikeEntity        LikeEntity[]
+  ViewEntity        ViewEntity[]
+  CommentEntity     CommentEntity[]
+  ActivityLogEntity ActivityLogEntity[]
+}
+
+// Define the Post model
+model PostEntity {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+
+  // relationship with user
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  categories        String[]            @default([])
+  LikeEntity        LikeEntity[]
+  ViewEntity        ViewEntity[]
+  CommentEntity     CommentEntity[]
+  ActivityLogEntity ActivityLogEntity[]
+}
+
+// Define the Like model
+model LikeEntity {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // Define the relationship with user
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  // Define the relationship with post
+  post   PostEntity @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+
+  @@unique([userId(sort: Asc), postId])
+}
+
+// Define the View model
+model ViewEntity {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  // Define the relationship with user
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  // Define the relationship with post
+  post   PostEntity @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+  @@unique([userId(sort: Asc), postId])
+
+  count Int @default(1)
+}
+
+// Define the Comment model
+model CommentEntity {
+  id        Int      @id @default(autoincrement())
+  comment   String
+  createdAt DateTime @default(now())
+
+  // Define the relationship with user
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  // Define the relationship with post
+  post   PostEntity @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+}
+
+enum ActivityType {
+  LIKE
+  COMMENT
+  CREATE
+}
+
+// Define the Activity Log model
+model ActivityLogEntity {
+  id        Int          @id @default(autoincrement())
+  activity  ActivityType
+  createdAt DateTime     @default(now())
+
+  // Define the relationship with user
+  user   UserEntity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  // Define the relationship with post
+  post   PostEntity @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+}
