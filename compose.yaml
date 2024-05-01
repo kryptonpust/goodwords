@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: goodwords-pg
+    environment:
+      - POSTGRES_USER=$DATABASE_USER
+      - POSTGRES_PASSWORD=$DATABASE_PASSWORD
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./server:/app
+    depends_on:
+      - db
+    
