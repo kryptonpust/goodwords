@@ -10,11 +10,17 @@ registerEnumType(Gender, {
 export class UserModel {
   @Field(() => ID)
   id: UserEntity['id'];
+
   firstName: UserEntity['firstName'];
+
   lastName: UserEntity['lastName'];
+
   dateOfBirth: UserEntity['dateOfBirth'];
+
   @Field(() => Gender)
   gender: UserEntity['gender'];
+
   email: UserEntity['email'];
+
   createdAt: UserEntity['createdAt'];
 }

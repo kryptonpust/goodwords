@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { MONTH_NAMES } from './constants';
 
 export const assertNotEmpty = (obj: object) => {
   if (Object.keys(obj).length === 0) {
@@ -8,20 +9,7 @@ export const assertNotEmpty = (obj: object) => {
 
 export function convertISOToCustomFormat(isoDate: Date) {
   const date = new Date(isoDate);
-  const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+  const monthNames = MONTH_NAMES;
   const day = date.getDate();
   const monthIndex = date.getMonth();
   const year = date.getFullYear();

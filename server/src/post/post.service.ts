@@ -3,36 +3,23 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostEntity, UserEntity } from '@prisma/client';
 import { ActivityLogService } from 'src/activity-log/activity-log.service';
 import { PrismaService } from 'src/database/prisma.service';
-import { CommentRepository } from '../comment/repository/comment.repository';
 import { CreatePostInput } from './inputs/create-post.input';
 import { UpdatePostInput } from './inputs/update-post.input';
-import { LikeRepository } from './repository/like.repository';
 import { PostRepository } from './repository/post.repository';
 import { ViewRepository } from './repository/view.repository';
+import { POST_TYPES } from 'src/utils/constants';
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
-    private readonly likeRepository: LikeRepository,
-    private readonly commentRepository: CommentRepository,
     private readonly viewRepository: ViewRepository,
     private readonly activityLogService: ActivityLogService,
     private readonly prisma: PrismaService,
   ) {}
 
   getCategories() {
-    return [
-      'TECHNOLOGY',
-      'TRAVEL',
-      'FOOD',
-      'LIFESTYLE',
-      'FASHION',
-      'ENTERTAINMENT',
-      'DIY',
-      'BUSINESS',
-      'SPORTS',
-    ];
+    return POST_TYPES;
   }
 
   async createPost(
@@ -67,7 +54,7 @@ export class PostService {
     });
   }
 
-  async getPostById(id: number): Promise<PostEntity> {
+  async getPostByIdWithIncrementedView(id: number): Promise<PostEntity> {
     const result = await this.postRepository.getPost({
       where: {
         id,
@@ -102,76 +89,16 @@ export class PostService {
     });
   }
 
-  // async getPostById(id: number): Promise<PostEntity> {
-  //   return this.prisma.postEntity.findUnique({
-  //     where: { id },
-  //   });
-  // }
+  async getPostById(id: number): Promise<PostEntity> {
+    return this.prisma.postEntity.findUnique({
+      where: { id },
+    });
+  }
 
-  async getPostsByAuthorId(userId: number): Promise<PostEntity[]> {
+  async getPostsByUserId(userId: number): Promise<PostEntity[]> {
     return this.prisma.postEntity.findMany({
       where: { userId },
     });
-  }
-
-  async togglePostLike(userId: number, postId: number): Promise<PostEntity> {
-    const post = await this.prisma.postEntity.findUnique({
-      where: { id: postId },
-    });
-
-    if (!post) {
-      throw new Error('Post not found');
-    }
-
-    const like = await this.likeRepository.getLike({
-      cursor: {
-        userId_postId: {
-          userId,
-          postId,
-        },
-      },
-    });
-
-    if (like) {
-      await this.likeRepository.removeLike({
-        data: {
-          id: like.id,
-        },
-      });
-    } else {
-      await this.likeRepository.transaction(async () => {
-        await this.activityLogService.recordActivity(userId, postId, 'LIKE');
-        await this.likeRepository.createLike({
-          data: {
-            userId,
-            postId,
-          },
-        });
-      });
-    }
-
-    return post;
-  }
-
-  async countPostLikes(postId: number): Promise<number> {
-    return this.likeRepository.countLikes({
-      where: {
-        postId,
-      },
-    });
-  }
-
-  async isLiked(userId: number, postId: number): Promise<boolean> {
-    const like = await this.likeRepository.getLike({
-      cursor: {
-        userId_postId: {
-          userId,
-          postId,
-        },
-      },
-    });
-
-    return !!like;
   }
 
   countPostViews(id: number) {

@@ -1,13 +1,24 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CommentService } from './comment.service';
-import { UserEntity } from '@prisma/client';
+import { CommentEntity, UserEntity } from '@prisma/client';
 import { User } from 'src/auth/decorators/user.decorator';
 import { CreateCommentInput } from './inputs/create-comment.input';
 import { CommentModel } from './models/comment.model';
+import { UserModel } from 'src/user/models/user.model';
+import { UserService } from 'src/user/user.service';
 
-@Resolver()
+@Resolver(() => CommentModel)
 export class CommentResolver {
-  constructor(private readonly commentService: CommentService) {}
+  constructor(
+    private readonly commentService: CommentService,
+    private readonly userService: UserService,
+  ) {}
 
   @Mutation(() => CommentModel)
   async createComment(
@@ -20,5 +31,10 @@ export class CommentResolver {
       postId,
       createCommentInputData,
     );
+  }
+
+  @ResolveField('user', () => UserModel)
+  async user(@Parent() comment: CommentEntity) {
+    return this.userService.getUserById(comment.userId);
   }
 }

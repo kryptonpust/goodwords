@@ -1,15 +1,15 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { EnvConfigModule } from './env-config/env-config.module';
-import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
-import { CommentModule } from './comment/comment.module';
-import { ViewModule } from './view/view.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { EnvConfigModule } from './env-config/env-config.module';
+import { PostModule } from './post/post.module';
+import { UserModule } from './user/user.module';
+import { ComplexityPlugin } from './utils/ComplexityPlugin';
+import { PrismaClientExceptionFilter } from './database/filters/prisma-execption.filter';
 
 @Module({
   imports: [
@@ -22,14 +22,17 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     UserModule,
     PostModule,
     AuthModule,
-    CommentModule,
-    ViewModule,
   ],
   controllers: [],
   providers: [
+    ComplexityPlugin,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: PrismaClientExceptionFilter,
     },
   ],
   exports: [],

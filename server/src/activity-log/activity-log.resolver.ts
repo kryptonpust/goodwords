@@ -1,7 +1,7 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ActivityType, UserEntity } from '@prisma/client';
 import { User } from 'src/auth/decorators/user.decorator';
-import { Post } from 'src/post/models/post.model';
+import { PostModel } from 'src/post/models/post.model';
 import { PostService } from '../post/post.service';
 import { UserService } from '../user/user.service';
 import { ActivityLogService } from './activity-log.service';
@@ -25,9 +25,9 @@ export class ActivityLogResolver {
     return this.activityLogService.getActivityLogs(user.id, activity);
   }
 
-  @ResolveField('post', () => Post)
+  @ResolveField('post', () => PostModel)
   async post(@Parent() activityLog: ActivityLog) {
-    return this.postService.getPostById(activityLog.postId);
+    return this.postService.getPostByIdWithIncrementedView(activityLog.postId);
   }
 
   @ResolveField('user', () => UserModel)

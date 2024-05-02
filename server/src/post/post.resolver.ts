@@ -17,10 +17,10 @@ import { CommentModel } from '../comment/models/comment.model';
 import { UserService } from '../user/user.service';
 import { CreatePostInput } from './inputs/create-post.input';
 import { UpdatePostInput } from './inputs/update-post.input';
-import { Post } from './models/post.model';
+import { PostModel } from './models/post.model';
 import { PostService } from './post.service';
 
-@Resolver(() => Post)
+@Resolver(() => PostModel)
 export class PostResolver {
   constructor(
     private readonly postService: PostService,
@@ -33,17 +33,17 @@ export class PostResolver {
     return this.postService.getCategories();
   }
 
-  @Query(() => [Post])
+  @Query(() => [PostModel])
   async posts() {
     return this.postService.getPosts();
   }
 
-  @Query(() => Post)
+  @Query(() => PostModel)
   async postById(@Args('id', { type: () => Int }) id: number) {
-    return this.postService.getPostById(id);
+    return this.postService.getPostByIdWithIncrementedView(id);
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => PostModel)
   async createPost(
     @Args('createPostInputData') createPostInputData: CreatePostInput,
     @User() user: UserEntity,
@@ -51,7 +51,7 @@ export class PostResolver {
     return await this.postService.createPost(user.id, createPostInputData);
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => PostModel)
   async updatePost(
     @Args('postId', { type: () => Int }) postId: number,
     @Args('updatePostInputData') updatePostInputData: UpdatePostInput,
@@ -61,17 +61,12 @@ export class PostResolver {
     return this.postService.updatePost(user.id, postId, updatePostInputData);
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => PostModel)
   async deletePost(
     @Args('postId', { type: () => Int }) postId: number,
     @User() user: UserEntity,
   ) {
     return await this.postService.deletePost(user.id, postId);
-  }
-
-  @Mutation(() => Post)
-  async toggleLike(@Args('postId') postId: number, @User() user: UserEntity) {
-    return await this.postService.togglePostLike(user.id, postId);
   }
 
   @ResolveField('user', () => UserModel)
@@ -82,16 +77,6 @@ export class PostResolver {
   @ResolveField('isMine', () => Boolean)
   async isMine(@Parent() post: PostEntity, @User() authUser: UserModel) {
     return post.userId === authUser.id;
-  }
-
-  @ResolveField('likes', () => Number)
-  async likes(@Parent() post: PostEntity) {
-    return this.postService.countPostLikes(post.id);
-  }
-
-  @ResolveField('isLiked', () => Boolean)
-  async isLiked(@Parent() post: PostEntity, @User() user: UserEntity) {
-    return this.postService.isLiked(user.id, post.id);
   }
 
   @ResolveField('comments', () => [CommentModel])

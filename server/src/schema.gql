@@ -23,13 +23,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type CommentModel {
-  id: ID!
-  comment: String!
-  createdAt: DateTime!
+type UserWithTokenModel {
+  user: UserModel!
+  token: String!
 }
 
-type Post {
+type PostModel {
   id: ID!
   title: String!
   content: String!
@@ -37,10 +36,10 @@ type Post {
   categories: [String!]!
   createdAt: DateTime!
   isMine: Boolean!
-  likes: Float!
-  isLiked: Boolean!
   comments: [CommentModel!]!
   views: Float!
+  likes: Float!
+  isLiked: Boolean!
 }
 
 type ActivityLog {
@@ -49,7 +48,7 @@ type ActivityLog {
   createdAt: DateTime!
   userId: Float!
   postId: Float!
-  post: Post!
+  post: PostModel!
   user: UserModel!
 }
 
@@ -59,25 +58,27 @@ enum ActivityType {
   CREATE
 }
 
-type UserWithTokenModel {
+type CommentModel {
+  id: ID!
+  comment: String!
+  createdAt: DateTime!
   user: UserModel!
-  token: String!
 }
 
 type Query {
   user(id: Int!): UserModel!
   categories: [String!]!
-  posts: [Post!]!
-  postById(id: Int!): Post!
+  posts: [PostModel!]!
+  postById(id: Int!): PostModel!
   getActivityLogs(activity: ActivityType): [ActivityLog!]!
 }
 
 type Mutation {
-  createPost(createPostInputData: CreatePostInput!): Post!
-  updatePost(postId: Int!, updatePostInputData: UpdatePostInput!): Post!
-  deletePost(postId: Int!): Post!
-  toggleLike(postId: Float!): Post!
+  createPost(createPostInputData: CreatePostInput!): PostModel!
+  updatePost(postId: Int!, updatePostInputData: UpdatePostInput!): PostModel!
+  deletePost(postId: Int!): PostModel!
   createComment(postId: Float!, createCommentInputData: CreateCommentInput!): CommentModel!
+  toggleLike(postId: Float!): PostModel!
   login(createLoginData: CreateLoginInput!): UserWithTokenModel!
   register(createRegisterInput: CreateRegisterInput!): UserWithTokenModel!
 }

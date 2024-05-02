@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { UserModel } from 'src/user/models/user.model';
 
 @ObjectType()
-export class Post {
+export class PostModel {
   @Field(() => ID)
   id: number;
 
@@ -15,7 +15,6 @@ export class Post {
 
   @Field(() => UserModel, { complexity: 50 })
   user: UserModel;
-  // userId: number;
 
   @Field(() => [String])
   categories: string[];
