@@ -4,6 +4,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { EnvConfigModule } from './env-config/env-config.module';
 import { UserModule } from './user/user.module';
+import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
+import { ViewModule } from './view/view.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -14,9 +20,18 @@ import { UserModule } from './user/user.module';
       context: ({ req, res }) => ({ req, res }),
     }),
     UserModule,
+    PostModule,
+    AuthModule,
+    CommentModule,
+    ViewModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
   exports: [],
 })
 export class AppModule {}

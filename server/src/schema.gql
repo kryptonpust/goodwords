@@ -23,6 +23,89 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type CommentModel {
+  id: ID!
+  comment: String!
+  createdAt: DateTime!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  user: UserModel!
+  categories: [String!]!
+  createdAt: DateTime!
+  isMine: Boolean!
+  likes: Float!
+  isLiked: Boolean!
+  comments: [CommentModel!]!
+  views: Float!
+}
+
+type ActivityLog {
+  id: Float!
+  activity: ActivityType!
+  createdAt: DateTime!
+  userId: Float!
+  postId: Float!
+  post: Post!
+  user: UserModel!
+}
+
+enum ActivityType {
+  LIKE
+  COMMENT
+  CREATE
+}
+
+type UserWithTokenModel {
+  user: UserModel!
+  token: String!
+}
+
 type Query {
   user(id: Int!): UserModel!
+  categories: [String!]!
+  posts: [Post!]!
+  postById(id: Int!): Post!
+  getActivityLogs(activity: ActivityType): [ActivityLog!]!
+}
+
+type Mutation {
+  createPost(createPostInputData: CreatePostInput!): Post!
+  updatePost(postId: Int!, updatePostInputData: UpdatePostInput!): Post!
+  deletePost(postId: Int!): Post!
+  toggleLike(postId: Float!): Post!
+  createComment(postId: Float!, createCommentInputData: CreateCommentInput!): CommentModel!
+  login(createLoginData: CreateLoginInput!): UserWithTokenModel!
+  register(createRegisterInput: CreateRegisterInput!): UserWithTokenModel!
+}
+
+input CreatePostInput {
+  content: String!
+  categories: [String!]!
+}
+
+input UpdatePostInput {
+  content: String
+  categories: [String!]
+}
+
+input CreateCommentInput {
+  comment: String!
+}
+
+input CreateLoginInput {
+  email: String!
+  password: String!
+}
+
+input CreateRegisterInput {
+  firstName: String!
+  lastName: String!
+  dateOfBirth: DateTime!
+  gender: Gender!
+  email: String!
+  password: String!
 }
