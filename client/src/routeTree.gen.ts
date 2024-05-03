@@ -24,6 +24,10 @@ import { Route as SignupAccountInfoImport } from './routes/sign_up/account-info'
 const LoginLazyImport = createFileRoute('/login')()
 const AboutLazyImport = createFileRoute('/about')()
 const ProtectedPostsLazyImport = createFileRoute('/_protected/posts')()
+const ProtectedActivitiesLazyImport = createFileRoute(
+  '/_protected/activities',
+)()
+const ProtectedPostIdLazyImport = createFileRoute('/_protected/post/$id')()
 
 // Create/Update Routes
 
@@ -59,6 +63,13 @@ const ProtectedPostsLazyRoute = ProtectedPostsLazyImport.update({
   import('./routes/_protected/posts.lazy').then((d) => d.Route),
 )
 
+const ProtectedActivitiesLazyRoute = ProtectedActivitiesLazyImport.update({
+  path: '/activities',
+  getParentRoute: () => ProtectedRoute,
+} as any).lazy(() =>
+  import('./routes/_protected/activities.lazy').then((d) => d.Route),
+)
+
 const SignupAdditionalInfoRoute = SignupAdditionalInfoImport.update({
   path: '/sign_up/additional-info',
   getParentRoute: () => rootRoute,
@@ -68,6 +79,13 @@ const SignupAccountInfoRoute = SignupAccountInfoImport.update({
   path: '/sign_up/account-info',
   getParentRoute: () => rootRoute,
 } as any)
+
+const ProtectedPostIdLazyRoute = ProtectedPostIdLazyImport.update({
+  path: '/post/$id',
+  getParentRoute: () => ProtectedRoute,
+} as any).lazy(() =>
+  import('./routes/_protected/post.$id.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -97,6 +115,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupAdditionalInfoImport
       parentRoute: typeof rootRoute
     }
+    '/_protected/activities': {
+      preLoaderRoute: typeof ProtectedActivitiesLazyImport
+      parentRoute: typeof ProtectedImport
+    }
     '/_protected/posts': {
       preLoaderRoute: typeof ProtectedPostsLazyImport
       parentRoute: typeof ProtectedImport
@@ -105,6 +127,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_protected/post/$id': {
+      preLoaderRoute: typeof ProtectedPostIdLazyImport
+      parentRoute: typeof ProtectedImport
+    }
   }
 }
 
@@ -112,7 +138,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
-  ProtectedRoute.addChildren([ProtectedPostsLazyRoute]),
+  ProtectedRoute.addChildren([
+    ProtectedActivitiesLazyRoute,
+    ProtectedPostsLazyRoute,
+    ProtectedPostIdLazyRoute,
+  ]),
   AboutLazyRoute,
   LoginLazyRoute,
   SignupAccountInfoRoute,
