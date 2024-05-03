@@ -7,19 +7,23 @@ import {
   Paper,
   PasswordInput,
   Space,
-  Text,
   TextInput,
   Title,
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useAuthStore } from "../../hooks/useAuthStore";
 import { useSignUpStore } from "../../hooks/useSignUpStore";
+import { useMutation } from "@apollo/client";
+import { useEffect } from "react";
+import { SIGN_UP_USER } from "../../utils/mutations";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export function AccountInfoScreen() {
+  const [signUpUser, { data, loading }] = useMutation(SIGN_UP_USER);
   const [setToken] = useAuthStore((state) => [state.setToken]);
   const navigate = useNavigate();
-  const [firstName, lastName, dob, gender, email, setEmail] = useSignUpStore(
+  const [firstName, lastName, dob, gender, email, setEmail, resetSignUpStore] = useSignUpStore(
     (state) => [
       state.firstName,
       state.lastName,
@@ -50,10 +54,25 @@ export function AccountInfoScreen() {
     }),
   });
 
-
+  useEffect(() => {
+    if (data) {
+      setToken(data.register.token);
+      navigate({ to: "/posts" });
+      resetSignUpStore();
+    }
+  }, [data, navigate, resetSignUpStore, setToken]);
   const handleNext = (values: typeof form.values) => {
     console.log(firstName, lastName, dob, gender, email, values.password);
-    setToken("token");
+    signUpUser({
+      variables: {
+        firstName: firstName,
+        lastName: lastName,
+        dateOfBirth: dob,
+        gender: gender,
+        email: email,
+        password: values.password,
+      },
+    });
   };
   const handlePrev = () => {
     navigate({ to: "/sign_up/additional-info" });
@@ -96,6 +115,7 @@ export function AccountInfoScreen() {
               <Button
                 mt="xl"
                 type="submit"
+                loading={loading}
                 loaderProps={{ type: "dots" }}
               >
                 Sign up

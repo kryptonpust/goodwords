@@ -22,6 +22,7 @@ import { Route as SignupAccountInfoImport } from './routes/sign_up/account-info'
 // Create Virtual Routes
 
 const LoginLazyImport = createFileRoute('/login')()
+const AboutLazyImport = createFileRoute('/about')()
 const ProtectedPostsLazyImport = createFileRoute('/_protected/posts')()
 
 // Create/Update Routes
@@ -30,6 +31,11 @@ const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+
+const AboutLazyRoute = AboutLazyImport.update({
+  path: '/about',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
 const ProtectedRoute = ProtectedImport.update({
   id: '/_protected',
@@ -75,6 +81,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedImport
       parentRoute: typeof rootRoute
     }
+    '/about': {
+      preLoaderRoute: typeof AboutLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
@@ -103,6 +113,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   ProtectedRoute.addChildren([ProtectedPostsLazyRoute]),
+  AboutLazyRoute,
   LoginLazyRoute,
   SignupAccountInfoRoute,
   SignupAdditionalInfoRoute,

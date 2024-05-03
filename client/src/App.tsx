@@ -18,6 +18,13 @@ declare module "@tanstack/react-router" {
 }
 
 const theme = createTheme({
+  // components: {
+  //   Container: Container.extend({
+  //     classNames: (_, { size }) => ({
+  //       root: cx({ [classes.responsiveContainer]: size === "responsive" }),
+  //     }),
+  //   }),
+  // },
 });
 
 function App() {
