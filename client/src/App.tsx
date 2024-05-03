@@ -5,7 +5,7 @@ import "@mantine/notifications/styles.css";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { useAuthStore } from "./hooks/useAuthStore";
+import { useAuthStore } from "./hooks/zustand/useAuthStore";
 import { routeTree } from "./routeTree.gen";
 // Create a new router instance
 const router = createRouter({ routeTree, context: { auth: undefined! } });

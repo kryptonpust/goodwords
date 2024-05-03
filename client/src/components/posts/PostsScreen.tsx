@@ -6,8 +6,8 @@ import { ContentLoadingComponent } from "../ContentLoadingComponent";
 import { CreatePostComponent } from "./CreatePostComponent";
 import { PostCardComponent } from "./PostCardComponent";
 import { EditPostComponent } from "./EditPostComponent";
-import { usePostEditStore } from "../../hooks/usePostEditStore";
-import { usePostDeleteStore } from "../../hooks/usePostDeleteStore";
+import { usePostEditStore } from "../../hooks/zustand/usePostEditStore";
+import { usePostDeleteStore } from "../../hooks/zustand/usePostDeleteStore";
 import { DeletePostComponent } from "./DeletePostComponent";
 
 export function PostsScreen() {

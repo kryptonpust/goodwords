@@ -6,16 +6,16 @@ import {
   Divider,
   Group,
   ScrollArea,
-  Stack,
-  Text,
+  Stack
 } from "@mantine/core";
 import { IconEye, IconThumbUp } from "@tabler/icons-react";
 import { useParams } from "@tanstack/react-router";
-import { useToggleLike } from "../../hooks/useToggleLike";
+import { useToggleLike } from "../../hooks/graphql/useToggleLike";
 import { GET_POST_BY_ID } from "../../utils/query";
-import { PostCommentsComponent } from "../posts/PostCommentsComponent";
+import { ContentLoadingComponent } from "../ContentLoadingComponent";
 import { PostInfoComponent } from "../posts/PostInfoComponent";
 import { PostCommentInputComponent } from "./PostCommentInputComponent";
+import { PostCommentsComponent } from "./PostCommentsComponent";
 
 export function PostDetailsScreen() {
   const id = useParams({
@@ -36,7 +36,7 @@ export function PostDetailsScreen() {
     toggleLike();
   };
 
-  if (!post) return <Text>Loading...</Text>;
+  if (!post) return <ContentLoadingComponent />;
 
   return (
     <Center my={20}>

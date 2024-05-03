@@ -37,4 +37,9 @@ export class CommentResolver {
   async user(@Parent() comment: CommentEntity) {
     return this.userService.getUserById(comment.userId);
   }
+
+  @ResolveField('isMine', () => Boolean)
+  async isMine(@Parent() comment: CommentEntity, @User() user: UserEntity) {
+    return comment.userId === user.id;
+  }
 }

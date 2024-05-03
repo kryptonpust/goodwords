@@ -38,7 +38,11 @@ export const GET_POST_BY_ID = gql(`
       comments{
         id
         comment
-        
+        isMine
+        user{
+          id
+          fullName
+        }
       }
       user {
         id

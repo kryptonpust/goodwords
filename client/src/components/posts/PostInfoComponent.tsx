@@ -1,8 +1,8 @@
 import { Box } from "@mantine/core";
 import { Post, UserModel } from "../../__generated__/graphql";
-import { usePostEditStore } from "../../hooks/usePostEditStore";
+import { usePostEditStore } from "../../hooks/zustand/usePostEditStore";
 import { PostOrCommentInfoTemplate } from "../PostOrCommentInfoTemplate";
-import { usePostDeleteStore } from "../../hooks/usePostDeleteStore";
+import { usePostDeleteStore } from "../../hooks/zustand/usePostDeleteStore";
 
 type PostInfoComponentProps = {
   post: Pick<Post, "content" | "categories" | "isMine"> & {

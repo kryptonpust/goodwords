@@ -10,7 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { Outlet, useNavigate } from "@tanstack/react-router";
-import { useAuthStore } from "../hooks/useAuthStore";
+import { useAuthStore } from "../hooks/zustand/useAuthStore";
 
 export function AppLayout() {
   const auth = useAuthStore();
@@ -48,7 +48,7 @@ export function AppLayout() {
           </Grid.Col>
           <Grid.Col span={3}>
             <Flex align={"center"} justify={"flex-end"} m={10}>
-              <Text>Nafiul Rony</Text>
+              <Text>{auth.fullName || 'Unknown'}</Text>
               <Space w={10} />
               <Avatar radius={"xl"} />
               <Space w={10} />

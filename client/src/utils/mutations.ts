@@ -5,6 +5,7 @@ export const LOGIN_USER = gql(`
     login(createLoginData: { email: $email, password: $password }) {
       user {
         id
+        fullName
       }
       token
     }
@@ -32,6 +33,7 @@ export const SIGN_UP_USER = gql(`
     ) {
       user {
         id
+        fullName
       }
       token
     }

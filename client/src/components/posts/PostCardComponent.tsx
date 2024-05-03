@@ -2,7 +2,7 @@ import { Card, Group, Button } from "@mantine/core";
 import { IconThumbUp, IconMessageDots } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { GetPostsQuery } from "../../__generated__/graphql";
-import { useToggleLike } from "../../hooks/useToggleLike";
+import { useToggleLike } from "../../hooks/graphql/useToggleLike";
 import { PostInfoComponent } from "./PostInfoComponent";
 
 export function PostCardComponent({post}: {post: GetPostsQuery["posts"][0]}) {

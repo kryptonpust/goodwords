@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useSignUpStore } from "../../hooks/useSignUpStore";
+import { useSignUpStore } from "../../hooks/zustand/useSignUpStore";
 
 export function PersonalInfoScreen() {
   const navigate = useNavigate();

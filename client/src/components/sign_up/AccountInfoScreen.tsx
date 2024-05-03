@@ -13,27 +13,27 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useSignUpStore } from "../../hooks/useSignUpStore";
+import { useSignUpStore } from "../../hooks/zustand/useSignUpStore";
 import { useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { SIGN_UP_USER } from "../../utils/mutations";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import { useAuthStore } from "../../hooks/zustand/useAuthStore";
+import { Gender } from "../../__generated__/graphql";
 
 export function AccountInfoScreen() {
   const [signUpUser, { data, loading }] = useMutation(SIGN_UP_USER);
   const [setToken] = useAuthStore((state) => [state.setToken]);
   const navigate = useNavigate();
-  const [firstName, lastName, dob, gender, email, setEmail, resetSignUpStore] = useSignUpStore(
-    (state) => [
+  const [firstName, lastName, dob, gender, email, setEmail, resetSignUpStore] =
+    useSignUpStore((state) => [
       state.firstName,
       state.lastName,
       state.dob,
       state.gender,
       state.email,
       state.setEmail,
-      state.reset
-    ]
-  );
+      state.reset,
+    ]);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -56,7 +56,7 @@ export function AccountInfoScreen() {
 
   useEffect(() => {
     if (data) {
-      setToken(data.register.token);
+      setToken(data.register.token, data.register.user.fullName);
       navigate({ to: "/posts" });
       resetSignUpStore();
     }
@@ -68,7 +68,7 @@ export function AccountInfoScreen() {
         firstName: firstName,
         lastName: lastName,
         dateOfBirth: dob,
-        gender: gender,
+        gender: gender as Gender,
         email: email,
         password: values.password,
       },

@@ -1,19 +1,12 @@
-import { useMutation } from "@apollo/client";
 import { Button, Center, Group, Modal, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { usePostDeleteStore } from "../../hooks/usePostDeleteStore";
-import { DELETE_POST } from "../../utils/mutations";
+import { useDeletePost } from "../../hooks/graphql/useDeletePost";
+import { usePostDeleteStore } from "../../hooks/zustand/usePostDeleteStore";
 
 export function DeletePostComponent() {
   const { postId, closeDeletePost } = usePostDeleteStore();
 
-  const [deletePost, { loading }] = useMutation(DELETE_POST, {
-    update(cache, { data }) {
-      cache.evict({
-        id: cache.identify({ __typename: "Post", id: data?.deletePost.id }),
-      });
-    },
-  });
+  const [deletePost, { loading }] = useDeletePost();
 
   const handleSubmit = () => {
     if (postId) {

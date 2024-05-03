@@ -1,7 +1,6 @@
-import { useMutation } from "@apollo/client";
 import { notifications } from "@mantine/notifications";
-import { usePostEditStore } from "../../hooks/usePostEditStore";
-import { UPDATE_POST } from "../../utils/mutations";
+import { useUpdatePost } from "../../hooks/graphql/useUpdatePost";
+import { usePostEditStore } from "../../hooks/zustand/usePostEditStore";
 import {
   PostAddEditFormComponent,
   PostAddEditFormState,
@@ -10,24 +9,7 @@ import {
 export function EditPostComponent() {
   const { post, closeEditPost } = usePostEditStore();
 
-  const [updatePost, { loading }] = useMutation(UPDATE_POST, {
-    update(cache, { data }) {
-      cache.modify({
-        id: cache.identify({
-          __typename: "Post",
-          id: post?.id,
-        }),
-        fields: {
-          content(prev) {
-            return data?.updatePost.content ?? prev;
-          },
-          categories(prev) {
-            return data?.updatePost.categories ?? prev;
-          },
-        },
-      });
-    },
-  });
+  const [updatePost, { loading }] = useUpdatePost(post?.id || -1);
 
   const handleSubmit = (formState: PostAddEditFormState) => {
     if (post) {
@@ -49,17 +31,17 @@ export function EditPostComponent() {
   };
 
   return (
-      <PostAddEditFormComponent
-        title="Edit Post"
-        submitButtonLabel="Update Post"
-        opened={post ? true : false}
-        close={closeEditPost}
-        formData={{
-          content: post?.content ?? "",
-          categories: post?.categories || [],
-        }}
-        submissionOnGoing={loading}
-        onSubmit={handleSubmit}
-      />
+    <PostAddEditFormComponent
+      title="Edit Post"
+      submitButtonLabel="Update Post"
+      opened={post ? true : false}
+      close={closeEditPost}
+      formData={{
+        content: post?.content ?? "",
+        categories: post?.categories || [],
+      }}
+      submissionOnGoing={loading}
+      onSubmit={handleSubmit}
+    />
   );
 }

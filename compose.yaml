@@ -26,6 +26,8 @@ services:
     build:
       context: client
       dockerfile: Dockerfile.dev
+    environment:
+      - VITE_SERVER_URL=http://localhost:5000/graphql
     ports:
       - "3000:3000"
     volumes:

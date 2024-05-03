@@ -7,6 +7,18 @@ import { AUTH_LOCAL_STORAGE } from "./constants";
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message }) => {
+      if (message === "Unauthorized") {
+        notifications.show({
+          title: "Unauthorized",
+          message: "Please login to continue",
+          color: "red",
+        });
+        localStorage.removeItem(AUTH_LOCAL_STORAGE);
+        //give time for the notification to show
+        setTimeout(() => {
+          window.location.reload();
+        },1000);
+      }
       notifications.show({
         title: "Error ",
         message: message,
@@ -27,7 +39,6 @@ const authLink = setContext((_, { headers }) => {
   }: {
     state: { token: string };
   } = JSON.parse(localStorage.getItem(AUTH_LOCAL_STORAGE) || "{}");
-  console.log(state);
   return {
     headers: {
       ...headers,
@@ -35,8 +46,7 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
-const httpLink = new HttpLink({ uri: "http://localhost:5000/graphql" });
+const httpLink = new HttpLink({ uri: import.meta.env.VITE_SERVER_URL});
 
 export const client = new ApolloClient({
   // uri: "http://localhost:5000/graphql",

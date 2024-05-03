@@ -13,7 +13,7 @@ import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import { useAuthStore } from "../../hooks/zustand/useAuthStore";
 import { EMAIL_REGEX } from "../../utils/constants";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../utils/mutations";
@@ -42,7 +42,7 @@ export function SignInScreen() {
         message: "You have been successfully signed in",
         color: "teal",
       });
-      setToken(data.login.token);
+      setToken(data.login.token, data.login.user.fullName);
       navigate({ to: "/posts" });
     }
   }, [data, navigate, setToken]);
@@ -69,7 +69,13 @@ export function SignInScreen() {
             key={form.key("password")}
             {...form.getInputProps("password")}
           />
-          <Button fullWidth mt="xl" type="submit" loading={loading} loaderProps={{type: 'dots'}}>
+          <Button
+            fullWidth
+            mt="xl"
+            type="submit"
+            loading={loading}
+            loaderProps={{ type: "dots" }}
+          >
             Sign in
           </Button>
           <Space h={10} />

@@ -16,7 +16,7 @@ export function PostCommentsComponent({
             <Card withBorder radius="md" p="md" key={comment.id}>
                 <Card.Section p={10}>
                     <PostOrCommentInfoTemplate
-                        title={"Jane Doe"}
+                        title={comment.isMine ? "You" : comment.user.fullName}
                         content={comment.comment}
                         variant="comment"
                     />

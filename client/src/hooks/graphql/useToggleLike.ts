@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { TOGGLE_LIKE } from "../utils/mutations";
+import { TOGGLE_LIKE } from "../../utils/mutations";
 
 export const useToggleLike = (
   postId: number | string,
@@ -9,7 +9,7 @@ export const useToggleLike = (
     update(cache, { data }) {
       cache.modify({
         id: cache.identify({
-            __typename: 'Post',
+            __typename: 'PostModel',
             id: postId,
         }),
         fields: {

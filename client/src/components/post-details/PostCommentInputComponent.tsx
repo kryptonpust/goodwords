@@ -1,8 +1,6 @@
-import { useMutation } from "@apollo/client";
-import { Grid, Textarea, Button } from "@mantine/core";
+import { Button, Grid, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { gql } from "../../__generated__";
-import { CREATE_COMMENT } from "../../utils/mutations";
+import { useCreateComment } from "../../hooks/graphql/useCreateComment";
 
 type PostCommentInputComponentProps = {
   postId: number;
@@ -11,30 +9,7 @@ type PostCommentInputComponentProps = {
 export function PostCommentInputComponent({
   postId,
 }: PostCommentInputComponentProps) {
-  const [createComment,{loading}] = useMutation(CREATE_COMMENT, {
-    update(cache, { data }) {
-      cache.modify({
-        id: cache.identify({
-          __typename: "Post",
-          id: postId,
-        }),
-        fields: {
-          comments(existingComments = []) {
-            const newCommentRef = cache.writeFragment({
-              data: data?.createComment,
-              fragment: gql(`
-                fragment NewComment on CommentModel {
-                  id
-                  comment
-                }
-              `),
-            });
-            return [...existingComments,newCommentRef];
-          },
-        },
-      });
-    },
-  });
+  const [createComment,{loading}] = useCreateComment(postId);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
