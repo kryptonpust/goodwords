@@ -14,7 +14,9 @@
 
 ## Demo
 
-Witness the magic firsthand! Click [here](https://github.com/kryptonpust/goodwords/assets/30733693/fec470a3-94bc-465d-8737-2b10e2783968) for a captivating demo.
+Witness the magic firsthand!
+
+https://github.com/kryptonpust/goodwords/assets/30733693/fec470a3-94bc-465d-8737-2b10e2783968
 
 ## Installation
 
