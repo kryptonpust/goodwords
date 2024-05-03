@@ -1,30 +1,28 @@
-# GoodWords
-
-Elevate Your World with Good Words 🌟
+# GoodWords: Elevating Your World with Positive Vibes 🚀
 
 ## Features
 
-- Create a new account using persistent journey
-- Login to your account
-- Create a new post
-- View all posts
-- View a single post
-- Like a post
-- Comment on a post
-- View all comments on a post
-- view user activity
+- Seamlessly create a new account with a personalized journey
+- Effortlessly log in to your account
+- Inspire and share with the community by creating a new post
+- Explore a wealth of uplifting content by browsing through all posts
+- Dive deeper into the essence of each post by viewing them individually
+- Spread joy and positivity by liking posts that resonate with you
+- Engage in meaningful conversations by commenting on posts
+- Stay connected with the community by viewing all comments on a post
+- Stay updated and connected with user activities
 
-# Demo
+## Demo
 
-<https://github.com/kryptonpust/goodwords/assets/30733693/fec470a3-94bc-465d-8737-2b10e2783968>
+Witness the magic firsthand! Click [here](https://github.com/kryptonpust/goodwords/assets/30733693/fec470a3-94bc-465d-8737-2b10e2783968) for a captivating demo.
 
 ## Installation
 
-- Clone the repository
-- Create a `.env` file in the root directory and copy the contents of `env.example` file
-- Run `docker-compose up`
-- Run `docker-compose exec server yarn prisma migrate dev`
-- go to `http://localhost:3000`
+1. Begin your journey by cloning the repository
+2. Customize your experience by setting up your environment with a `.env` file (refer to `env.example` for guidance)
+3. Launch the application with ease using `docker-compose up`
+4. Seamlessly migrate your data with `docker-compose exec server yarn prisma migrate dev`
+5. Embark on your GoodWords adventure by visiting `http://localhost:3000`
 
 ## Tech Stack
 
@@ -33,7 +31,7 @@ Elevate Your World with Good Words 🌟
 - React
 - Zustand
 - Tanstack-router
-- GraphQL(Apollo-client)
+- GraphQL (Apollo-client)
 - Mantine UI
 - Mantine-forms
 - tabler-icons
@@ -42,7 +40,7 @@ Elevate Your World with Good Words 🌟
 
 - NestJS
 - Prisma
-- GraphQL(Apollo-server)
+- GraphQL (Apollo-server)
 - Postgres
 - Joi
 - passport-jwt
@@ -51,46 +49,49 @@ Elevate Your World with Good Words 🌟
 
 ### Docker
 
-- `docker-compose.yml` - Contains the docker-compose file
-- `env.example` - Contains the environment variables example file
+- `compose.yml`: Your gateway to the application's ecosystem
+- `env.example`: Your key to unlocking the power of environment variables
 
 ### Frontend
 
-- `client` - Contains the frontend code
-- `src/components` - Contains all the components used in the project
-- `src/routes` - Contains all the File based Route used in the project
-- `src/hooks/zustand` - Contains all the zustand hooks used in the project
-- `src/hooks/graphql` - Contains all the graphql hooks queries and mutations
-- `src/utils/client` - Contains all the apollo client setup
-- `src/utils/query` - Contains all the graphql queries
-- `src/utils/mutations` - Contains all the graphql mutations
-- `src/utils/utils` - Contains all the utility functions used in the project
-- `src/App.tsx` - Contains the App file
-- `src/main.tsx` - Contains the react entry point
-- `Dockerfile.dev` - Contains docker dev deployment file
-- `postcss.config.js` - Contains the postcss config file for mantine UI
+- `client`: Your portal to the frontend magic
+- `src/components`: Where creativity meets functionality
+- `src/routes`: Guiding you through your journey with intuitive file-based routes
+- `src/hooks/zustand`: Your arsenal of Zustand hooks for state management
+- `src/hooks/graphql`: Your gateway to GraphQL queries and mutations
+- `src/utils/client`: Streamlining your experience with Apollo client setup
+- `src/utils/query`: Unleashing the power of GraphQL queries
+- `src/utils/mutations`: Unleashing the power of GraphQL mutations
+- `src/utils/utils`: Your toolkit of utility functions
+- `src/App.tsx`: Where the magic begins
+- `src/main.tsx`: Your entry point to the GoodWords universe
+- `Dockerfile.dev`: Your guide to deploying with Docker for development
+- `postcss.config.js`: Your secret weapon for Mantine UI's PostCSS configuration
 
 ### Backend
 
-- `server` - Contains the backend code
-- `prisma` - Contains the prisma schema and migrations
-- `prisma/migrations` - Contains all the migrations
-- `prisma/schema.prisma` - Contains the prisma schema
-- `src` - Contains all the nestjs code
-- `src/auth` - Contains all the auth related code
-- `src/user` - Contains all the user related code
-- `src/post` - Contains all the post related code
-- `src/comment` - Contains all the post comment related code
-- `src/like` - Contains all the post liking related code
-- `src/activity` - Contains all the activity Logging related code
-- `src/database` - Contains prisma client setup
-- `src/env-config` - Contains the environment variables setup
-- `src/utils` - Contains all the utility functions used in the project
-- `src/schema.gql` - Contains the graphql schema
-- `src/app.module.ts` - Contains the nestjs app module
-- `src/main.ts` - Contains the nestjs entry point
-- `Dockerfile.dev` - Contains docker dev deployment file
+- `server`: Your fortress of backend brilliance
+- `prisma`: Your treasure trove of Prisma schema and migrations
+- `prisma/migrations`: Your path to seamless database migrations
+- `prisma/schema.prisma`: Your blueprint for the Prisma schema
+- `src`: Your hub of NestJS brilliance
+- `src/auth`: Safeguarding your journey with authentication magic
+- `src/user`: Nurturing the user experience with dedicated functionality
+- `src/post`: Crafting the essence of GoodWords with post-related functionality
+- `src/comment`: Fostering engaging discussions with post comment functionality
+- `src/like`: Spreading positivity with post liking functionality
+- `src/activity`: Tracking and celebrating community activity
+- `src/database`: Your gateway to the database world with Prisma client setup
+- `src/env-config`: Empowering your application with essential environment variables
+- `src/utils`: Your repository of utility functions
+- `src/schema.gql`: Defining the GraphQL schema
+- `src/app.module.ts`: Orchestrating the NestJS app
+- `src/main.ts`: Initiating the NestJS journey
+- `Dockerfile.dev`: Your companion for Docker-based development deployment
 
 ## Contributing
 
-Contributions are welcome! If you find any bugs or have suggestions for new features, please open an issue or submit a pull request.
+Join us in spreading positivity and making the world a better place! Whether you spot a bug or have an idea for a new feature, we welcome your contributions. Open an issue or submit a pull request, and let's make GoodWords even better together! 🌟
+
+**Empowered by ChatGPT,** *this markup is elegantly crafted to enhance readability.*
+
