@@ -53,6 +53,7 @@ export function AdditionalInfoScreen() {
             label="Date of Birth"
             placeholder="Your date of birth"
             required
+            maxDate={new Date()}
             key={form.key("dob")}
             {...form.getInputProps("dob")}
           />
